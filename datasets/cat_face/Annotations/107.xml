@@ -1,0 +1,26 @@
+<annotation>
+	<folder>JPEGImages</folder>
+	<filename>107.jpg</filename>
+	<path>D:\projects\Professional_Comprehensive_Design\datasets\cat_face\JPEGImages\107.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>500</width>
+		<height>313</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>cat</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>165</xmin>
+			<ymin>4</ymin>
+			<xmax>385</xmax>
+			<ymax>156</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>JPEGImages</folder>
+	<filename>138.jpg</filename>
+	<path>D:\projects\Professional_Comprehensive_Design\datasets\cat_face\JPEGImages\138.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>533</width>
+		<height>300</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>cat</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>217</xmin>
+			<ymin>17</ymin>
+			<xmax>483</xmax>
+			<ymax>223</ymax>
+		</bndbox>
+	</object>
+</annotation>

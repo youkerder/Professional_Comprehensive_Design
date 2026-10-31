@@ -1,0 +1,34 @@
+# 实验 02 · 目标跟踪（OpenCV）依赖
+#
+# 环境：Python 3.11.9（独立 venv：envs/pcd02_tracking）
+# 安装：envs\pcd02_tracking\Scripts\python.exe -m pip install --no-cache-dir -r requirements.txt
+# ---------------------------------------------------------------------------
+# !! 关键：必须装 opencv-contrib-python，不能只装 opencv-python !!
+#
+# 跟踪器（TrackerKCF_create / MultiTracker_create 等）位于 opencv 的 **contrib**
+# 模块，`pip install opencv-python` 装的包不含 tracking 部分。两者不能共存：
+#     pip uninstall -y opencv-python opencv-python-headless opencv-contrib-python
+#     pip install opencv-contrib-python==4.8.1.78
+#
+# 版本选择（本机实测）：
+#   * OpenCV >= 4.5.2：跟踪器移入 cv2.legacy，旧写法 cv2.TrackerKCF_create() 会
+#     AttributeError，应写 cv2.legacy.TrackerKCF_create()；code/trackers.py 已做
+#     两套命名空间的兼容查找。
+#   * OpenCV 5.0.0 基础版（C:\anaconda3 自带）不再提供这些经典跟踪器，不可用。
+#   * OpenCV 4.8.1 的优点：cv2.legacy 接口完整 + 较新的 FFmpeg 解码。本实验锁定它。
+#   * 已知问题：本版本 cv2.legacy.TrackerMOSSE 在纹理复杂的真实目标上每帧都判失败
+#     并把框置零；正式对比未使用 MOSSE（详见 README 第八节）。
+# ---------------------------------------------------------------------------
+
+opencv-contrib-python==4.8.1.78
+
+# 数值计算（匈牙利匹配、成功率曲线、AUC 积分）
+numpy==1.26.4
+
+# 可视化（轨迹图、指标曲线，需要中文字体：Microsoft YaHei / SimHei）
+matplotlib==3.8.4
+
+# 报告生成（make_report.py）需要 python-docx；也可以直接用仓库自带的运行时：
+#   <已安装 python-docx 的解释器>\python.exe
+# 若要装进 venv：
+#   python-docx>=1.1.0

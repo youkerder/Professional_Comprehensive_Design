@@ -1,0 +1,43 @@
+# 实验 04 · 视频检索（以图搜图 / 以图搜视频）依赖
+#
+# 环境：Python 3.8（建议）
+# ---------------------------------------------------------------------------
+
+# 深度学习框架（按本机 CUDA 版本选择安装命令，见 https://pytorch.org）
+# CUDA 11.8 示例：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+# CPU 示例：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch>=1.13.0
+torchvision>=0.14.0
+
+# 数值与数据处理
+numpy>=1.23.0
+pandas>=1.5.0
+scipy>=1.9.0
+scikit-learn>=1.1.0
+h5py>=3.7.0
+
+# 视频抽帧与图像处理
+opencv-python>=4.6.0
+Pillow>=9.2.0
+
+# 向量检索（"比较搜索效率"的关键：对比暴力检索 / FAISS / HNSW）
+faiss-cpu>=1.7.4
+# 有 GPU 且需要大规模对比时改用 GPU 版（与 faiss-cpu 二选一）：
+#   pip install faiss-gpu
+
+# 近似最近邻图索引（HNSW）
+hnswlib>=0.7.0
+
+# 可视化与进度
+matplotlib>=3.5.0
+tqdm>=4.64.0
+
+# ---------------------------------------------------------------------------
+# 可选：CLIP 等多模态骨干（语义检索效果更好，需联网下载权重）
+#   pip install git+https://github.com/openai/CLIP.git
+#
+# 可选：更快的图像读取
+#   pip install opencv-python-headless   # 无 GUI 环境的服务器上使用
+# ---------------------------------------------------------------------------

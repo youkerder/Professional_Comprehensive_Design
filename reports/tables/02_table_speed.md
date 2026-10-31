@@ -1,0 +1,17 @@
+### 表 跟踪速度实测
+
+| seq | algos | init_ms | mean_ms | p95_ms | fps |
+|---|---|---|---|---|---|
+| cross | BOOSTING | 831.79 | 72.6 | 76.88 | 13.8 |
+| cross | CSRT | 64.33 | 81.57 | 87.74 | 12.3 |
+| cross | KCF | 89.89 | 10.81 | 13.29 | 92.5 |
+| cross | MEDIANFLOW | 0.66 | 5.08 | 5.95 | 196.7 |
+| cross | MIL | 117.69 | 290.95 | 324.09 | 3.4 |
+| cross | KCF+CSRT+MEDIANFLOW | 40.5 | 35.08 | 38.39 | 28.5 |
+| cross | TLD | 66.46 | 97.46 | 113.73 | 10.3 |
+| occlude | BOOSTING | 863.76 | 73.04 | 75.7 | 13.7 |
+| occlude | CSRT | 59.92 | 77.08 | 88.57 | 13.0 |
+| occlude | KCF | 85.43 | 9.5 | 12.25 | 105.3 |
+| occlude | MEDIANFLOW | 0.6 | 5.22 | 6.1 | 191.7 |
+| occlude | MIL | 139.85 | 304.92 | 339.45 | 3.3 |
+| occlude | TLD | 60.25 | 98.8 | 110.33 | 10.1 |

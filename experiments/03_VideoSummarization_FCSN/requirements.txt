@@ -1,0 +1,35 @@
+# 实验 03 · 视频摘要（FCSN + TVSum）依赖
+#
+# 环境：Python 3.8（建议）
+# 说明：FCSN 原论文为 TensorFlow 1.x 实现；本目录以 PyTorch 复现为主。
+#       若改用 TF 版，请删除下面的 torch/torchvision，改用 tensorflow==1.15（需 CUDA 10.0）。
+# ---------------------------------------------------------------------------
+
+# 深度学习框架（按本机 CUDA 版本选择安装命令，见 https://pytorch.org）
+# CUDA 11.8 示例：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+# CPU 示例：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch>=1.13.0
+torchvision>=0.14.0
+
+# 数值与数据处理
+numpy>=1.23.0
+pandas>=1.5.0
+scipy>=1.9.0
+scikit-learn>=1.1.0
+h5py>=3.7.0
+
+# 视频读写与图像处理
+opencv-python>=4.6.0
+Pillow>=9.2.0
+
+# 可视化与进度
+matplotlib>=3.5.0
+tqdm>=4.64.0
+
+# 训练过程可视化（可选）
+# tensorboard>=2.10.0
+
+# 配置文件
+PyYAML>=6.0

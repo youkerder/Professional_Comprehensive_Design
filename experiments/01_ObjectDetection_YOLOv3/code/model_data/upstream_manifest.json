@@ -1,0 +1,120 @@
+{
+  "repo": "https://github.com/qqwweee/keras-yolo3",
+  "ref": "master",
+  "license": "MIT",
+  "files": [
+    {
+      "file": "LICENSE",
+      "source": "LICENSE",
+      "bytes": 1064,
+      "sha256": "6e4ff3eb80dc749aa99d37facd128071be512620b79896ec90703df571a46ded",
+      "action": "skipped"
+    },
+    {
+      "file": "UPSTREAM_README.md",
+      "source": "README.md",
+      "bytes": 4077,
+      "sha256": "1636e757462840d5a692867d9c3316a44a5b99c38452a01099c3b2d850727a4c",
+      "action": "skipped"
+    },
+    {
+      "file": "model_data/yolov3.cfg",
+      "source": "yolov3.cfg",
+      "bytes": 8342,
+      "sha256": "39498ec1475dbe57b0308c272d0ce8bd4f3434f70b4a06f59e8a5d6194afdfc6",
+      "action": "skipped"
+    },
+    {
+      "file": "model_data/yolo_anchors.txt",
+      "source": "model_data/yolo_anchors.txt",
+      "bytes": 76,
+      "sha256": "eefa3b3c699e8830835882faf04c426c1921b9c4ccdbd138191c5aab4079714d",
+      "action": "skipped"
+    },
+    {
+      "file": "model_data/tiny_yolo_anchors.txt",
+      "source": "model_data/tiny_yolo_anchors.txt",
+      "bytes": 50,
+      "sha256": "8520715659d0762cb9e356099da16ac0cbe8cabf588640b4a22ea1139bf7f097",
+      "action": "skipped"
+    },
+    {
+      "file": "model_data/voc_classes_upstream.txt",
+      "source": "model_data/voc_classes.txt",
+      "bytes": 135,
+      "sha256": "f14861775969fd006b382e005f96dc811ef062ea4a37356efb70d7775e90f743",
+      "action": "skipped"
+    },
+    {
+      "file": "model_data/coco_classes.txt",
+      "source": "model_data/coco_classes.txt",
+      "bytes": 625,
+      "sha256": "634a1132eb33f8091d60f2c346ababe8b905ae08387037aed883953b7329af84",
+      "action": "skipped"
+    },
+    {
+      "file": "yolo3/__init__.py",
+      "source": "yolo3/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "action": "skipped"
+    },
+    {
+      "file": "yolo3/model.py",
+      "source": "yolo3/model.py",
+      "bytes": 16491,
+      "sha256": "91df7df201d4ff6261a80b115377d07b81e40257c46c3e2fc9ef2281ec88a501",
+      "action": "skipped"
+    },
+    {
+      "file": "yolo3/utils.py",
+      "source": "yolo3/utils.py",
+      "bytes": 3843,
+      "sha256": "158358d032e06532505b224d5c4ddaef7fe3db12b3504457f0970e1bc3765f4a",
+      "action": "skipped"
+    },
+    {
+      "file": "font/FiraMono-Medium.otf",
+      "source": "font/FiraMono-Medium.otf",
+      "bytes": 127344,
+      "sha256": "2b3cb27b5a908bd42d8f6b0d0156b2e53ebb56b5d1ed037b5a1a52ca9ee0c402",
+      "url": "https://cdn.jsdelivr.net/gh/qqwweee/keras-yolo3@master/font/FiraMono-Medium.otf",
+      "action": "downloaded"
+    },
+    {
+      "file": "yolo.py",
+      "source": "yolo.py",
+      "bytes": 8540,
+      "sha256": "23bd878bcfe153c82e7dd05011bc4508c41fe1c9af94e96bc21e4ee665363689",
+      "action": "skipped"
+    },
+    {
+      "file": "yolo_video_upstream.py",
+      "source": "yolo_video.py",
+      "bytes": 2304,
+      "sha256": "89df467f662aed27e0b64483a54b689abf4d795ce3a766fe28b6205f1ebbd9f3",
+      "action": "skipped"
+    },
+    {
+      "file": "train_upstream.py",
+      "source": "train.py",
+      "bytes": 8332,
+      "sha256": "7f653cf7d02365bef0fe5390a6faa8ac87a5ff36bd7df8179a0aa81f5cefe1cd",
+      "action": "skipped"
+    },
+    {
+      "file": "voc_annotation_upstream.py",
+      "source": "voc_annotation.py",
+      "bytes": 1416,
+      "sha256": "dcbea5b5189ebd55d9d7733d41a5a4a3db10aaf40c7d27e0341e9394bca74aa5",
+      "action": "skipped"
+    },
+    {
+      "file": "kmeans.py",
+      "source": "kmeans.py",
+      "bytes": 3482,
+      "sha256": "c17926b59b778e591a8debcd3c435e3dd42165215caf79051028ea28670013e7",
+      "action": "skipped"
+    }
+  ]
+}

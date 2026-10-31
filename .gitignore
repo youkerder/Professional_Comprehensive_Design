@@ -1,0 +1,119 @@
+# ---- 数据集（体积大，不入库） ----
+datasets/**/*.jpg
+datasets/**/*.jpeg
+datasets/**/*.png
+datasets/**/*.bmp
+datasets/**/*.mp4
+datasets/**/*.avi
+datasets/**/*.mkv
+datasets/**/*.tsv
+datasets/**/*.mat
+datasets/**/*.npy
+datasets/**/*.npz
+datasets/**/*.zip
+datasets/**/*.tar
+datasets/**/*.tar.gz
+datasets/**/*.part
+!datasets/**/README.md
+!datasets/**/.gitkeep
+
+# CIFAR-10 解压后的批次文件没有扩展名（data_batch_1、test_batch、batches.meta），
+# 上面的通配规则覆盖不到，必须对目录整体忽略。
+datasets/classification/cifar10/cifar-10-batches-py/
+
+# ---- 模型权重（体积大） ----
+*.h5
+*.weights
+*.ckpt
+*.ckpt.*
+*.pt
+*.pth
+*.onnx
+*.pb
+*.tflite
+*.caffemodel
+*.prototxt
+!requirements.txt
+
+# ---- 输出与日志 ----
+experiments/*/outputs/*
+experiments/*/logs/*
+!experiments/*/outputs/.gitkeep
+!experiments/*/logs/.gitkeep
+experiments/*/models/*
+!experiments/*/models/.gitkeep
+
+# ---- 报告产物（中间态） ----
+reports/**/*.aux
+reports/**/*.toc
+reports/**/*.out
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# ---- 数据集标注中间产物 ----
+# ImageSets 索引、code/ 下的 train/val/test.txt 都是脚本生成的，不入库
+# 注意：不要用 datasets/cat_face/*.txt，那会把 predefined_classes.txt 也忽略掉
+datasets/cat_face/ImageSets/Main/*.txt
+!datasets/cat_face/ImageSets/Main/.gitkeep
+experiments/*/code/train.txt
+experiments/*/code/val.txt
+experiments/*/code/test.txt
+experiments/*/code/trainval.txt
+
+# ---- 自检临时目录 ----
+.selftest/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Office 临时文件 ----
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# ---- 虚拟环境（体积 1.9G，只保留建环境脚本） ----
+envs/*/
+!envs/*.md
+!envs/setup_tf_env.py
+!envs/.gitkeep
+
+# ---- 课程原始资料（版权原因，仅本地保留） ----
+docs/course_materials/
+docs/extracted_text/
+
+# ---- 报告成品（Word / PDF 留在本地，只上传脱敏 Markdown） ----
+reports/*.docx
+reports/*.pdf
+
+# ---- 回收站与临时目录 ----
+.tmp_pip/
+.tmp_scan/
+.trash/
+
+# ---- 03 实验的本地依赖安装目录（pip --target 产物，可用 requirements.txt 重装） ----
+experiments/03_VideoSummarization_FCSN/env_pkgs/
+experiments/03_VideoSummarization_FCSN/env_tensorboard/
+
+# ---- 预训练权重缓存（torch.hub / GoogLeNet） ----
+experiments/03_VideoSummarization_FCSN/pretrained/

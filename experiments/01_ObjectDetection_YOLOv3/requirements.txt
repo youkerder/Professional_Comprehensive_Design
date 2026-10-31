@@ -1,0 +1,71 @@
+# 实验 01 · 目标检测（keras-yolo3 / YOLOv3）依赖
+#
+# 环境：Python 3.10（本机实际使用）
+# ---------------------------------------------------------------------------
+# 与指导书的差异（详见 ../README.md 第三节与实验报告 2.4 节）
+#
+# 指导书环境一是 python 3.7/3.8 + tensorflow 2.3.0 + keras 2.4.3，
+# 但在本机上装不起来：venv 里 Python 3.8 的 OpenSSL 1.1.1 访问 pypi 时
+# 间歇性 TLS 握手失败（SSLError 142, ASN1: NOT_ENOUGH_DATA）；
+# 同一批 URL 用 Python 3.10 / 3.12 访问正常，换明文 HTTP 源也会被重定向到 443。
+#
+# 因此改用 Python 3.10 + tensorflow 2.10.0。选 2.10 而不是更新的版本，
+# 是因为它仍属于 **Keras 2**（keras.backend / fit_generator /
+# Lambda(arguments=...) 都还在），keras-yolo3 的改动最小。
+#
+# 本机 TF 只能 CPU：RTX 4060 是 sm_89（Ada），需要 CUDA 11.8+；
+# 而 tensorflow 2.10.0 绑定 CUDA 11.2（最高 sm_86），
+# TensorFlow 自 2.11 起取消 Windows 原生 GPU 支持。
+# ---------------------------------------------------------------------------
+#
+# 建议直接用脚本建环境（会自动建 venv 并安装下面这些）：
+#     python envs/setup_tf_env.py
+#
+# 手动安装时注意：一定要加 --only-binary=:all:，
+# 否则 pip 的解析器会在大量源码包候选上反复回溯、长时间无响应。
+# ---------------------------------------------------------------------------
+
+tensorflow==2.10.0
+keras==2.10.0
+
+# 关键传递依赖：必须钉死，否则会装到与 TF 2.10 不兼容的新版本
+numpy==1.23.5            # TF 2.10 不兼容 numpy 2.x
+h5py==3.8.0
+protobuf==3.19.6         # TF 2.10 要求 <3.20
+gast==0.4.0
+grpcio==1.53.0
+wrapt==1.14.1            # wrapt 2.x 改了 API，TF 2.10 会报错
+termcolor==2.3.0
+typing-extensions==4.9.0
+flatbuffers==23.5.26
+absl-py==1.4.0
+astunparse==1.6.3
+google-pasta==0.2.0
+keras-preprocessing==1.1.2
+opt-einsum==3.3.0
+six==1.16.0
+tensorboard==2.10.1
+tensorflow-estimator==2.10.0
+tensorboard-data-server==0.6.1
+tensorboard-plugin-wit==1.8.1
+tensorflow-io-gcs-filesystem==0.31.0
+
+# 图像处理与训练过程可视化
+# Pillow 必须 <10：上游 yolo.py 的 detect_image 用了 draw.textsize，
+# 该 API 在 Pillow 10 被移除。（本仓库的 detector.py 已做兼容，
+# 但保持 <10 可以让上游脚本原样也能跑。）
+Pillow==9.5.0
+opencv-python==4.8.1.78
+matplotlib==3.7.2
+lxml==4.9.3
+tqdm==4.66.1
+
+# ---------------------------------------------------------------------------
+# 不装 TensorFlow 也能跑的脚本（用系统/任意 Python 即可）：
+#   make_imagesets.py  voc_annotation.py  dataset_stats.py
+#   patch_yolov3_cfg.py  evaluate_detection.py  test_pipeline.py
+# 其中 auto_annotate.py 需要 PyTorch（另建一个装了 torch/torchvision 的环境即可）。
+#
+# 可选：数据标注工具
+#   pip install labelImg==1.8.6
+# ---------------------------------------------------------------------------

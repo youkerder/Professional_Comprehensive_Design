@@ -1,0 +1,16 @@
+{
+  "seq": "cross",
+  "desc": "三目标交叉：目标间互相遮挡 + 尺度变化",
+  "size": [
+    640,
+    360
+  ],
+  "fps": 25,
+  "frames": 300,
+  "occluder": null,
+  "occluded_frames": {
+    "target1": 0,
+    "target2": 0,
+    "target3": 0
+  }
+}
