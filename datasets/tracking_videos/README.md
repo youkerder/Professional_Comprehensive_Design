@@ -45,7 +45,7 @@ videos/person01.mp4      ↔  annotations/person01/gt/gt.txt         # MOT 格�
 | OTB-100 / OTB-50 | 自带 | OTB：Precision(20px)、Success(AUC)、SRE、TRE |
 | VOT 数据集 | 自带 | VOT：Accuracy、Robustness、EAO |
 | MOTChallenge（MOT16/17） | 自带 | MOT：MOTA、MOTP、IDF1、IDs、FM、ML |
-| `chaplin.mp4`（指导书示例） | 无 | 只能看效果，首帧框 `(287, 23, 86, 320)` |
+| `chaplin.mp4`（上游示例） | 无 | 只能看效果，首帧框 `(287, 23, 86, 320)` |
 | 自行录制 | **需自己标** | 用 `experiments/02_.../code/make_gt.py` 标注 |
 
 > **重要**：只有自标注真值或用公开数据集，才能计算精度类指标。自录视频不标真值就只能比较 FPS 和目视稳定性。

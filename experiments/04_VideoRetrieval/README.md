@@ -1,10 +1,10 @@
-# 实验 04 · 视频检索：以图搜图 / 以图搜视频
+# 04 · 视频检索：以图搜图 / 以图搜视频
 
-> 题目来源：《实验题目-4.docx》综合实验1（课程资料，本地保留，不入库）
+> 规格文档：原始 .docx / .pptx 因版权仅本地保留，不入库，说明见 [docs/README.md](../../docs/README.md)
 
 ---
 
-## 一、实验任务与要求
+## 1. 任务定义
 
 **任务**：基于深度学习方法，综合利用视频检索方法，实现 **以图搜图**、**以图搜视频**，并比较搜索的效率。
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 二、目录结构
+## 2. 目录结构
 
 ```
 experiments/04_VideoRetrieval/
@@ -41,7 +41,7 @@ experiments/04_VideoRetrieval/
 
 ---
 
-## 三、实验环境
+## 3. 运行环境
 
 ```bash
 conda create -n pcd04 python=3.8 -y
@@ -54,7 +54,7 @@ pip install -r requirements.txt
 
 ---
 
-## 四、数据准备
+## 4. 数据准备
 
 数据放在 [`datasets/retrieval/`](../../datasets/retrieval/)，详细说明见 [datasets/README.md](../../datasets/README.md)。
 
@@ -83,7 +83,7 @@ datasets/retrieval/images/
 
 ---
 
-## 五、方法设计
+## 5. 方法
 
 ### 5.1 深度学习特征提取
 
@@ -125,7 +125,7 @@ datasets/retrieval/images/
 
 ---
 
-## 六、运行步骤
+## 6. 运行
 
 ```bash
 # 1) 提取图像库特征
@@ -155,9 +155,9 @@ python code/benchmark.py --feats outputs/features/images_resnet50.npy \
 
 ---
 
-## 七、评价指标
+## 7. 评价指标
 
-题目要求 **两种不同的评价指标**。下面给出可选集合，**至少选两种**（推荐 ① + ②）：
+任务要求 **两种不同的评价指标**。下面给出可选集合，**至少选两种**（推荐 ① + ②）：
 
 ### ① Precision@K（准确率）
 返回的 Top-K 结果中相关项的比例：
@@ -186,11 +186,11 @@ Recall@K = |Top-K 中相关项| / |全部相关项|
 | 内存占用 (MB) | 索引规模 |
 
 > 建议用一张表对比：**不同骨干（ResNet50 / VGG16 / CLIP）× 不同索引（brute / flat / IVF / HNSW）**
-> 在 mAP 与查询延迟上的权衡，这是本实验最有价值的分析点。
+> 在 mAP 与查询延迟上的权衡，这是本模块最有价值的分析点。
 
 ---
 
-## 八、结果记录
+## 8. 结果
 
 | 项目 | 位置 |
 |---|---|
@@ -202,7 +202,7 @@ Recall@K = |Top-K 中相关项| / |全部相关项|
 
 ---
 
-## 九、常见问题
+## 9. 故障排查
 
 | 现象 | 原因与解决 |
 |---|---|
@@ -216,7 +216,7 @@ Recall@K = |Top-K 中相关项| / |全部相关项|
 
 ---
 
-## 十、参考
+## 10. 参考资料
 
 - ResNet：He et al., *Deep Residual Learning for Image Recognition*, CVPR 2016
 - CLIP：Radford et al., *Learning Transferable Visual Models From Natural Language Supervision*, ICML 2021

@@ -1,21 +1,21 @@
-# 实验一（TensorFlow 编程实验）· AlexNet 图像分类
+# 01a · 图像分类：AlexNet（TensorFlow）
 
-> 题目来源：《实验题目-4.docx》**实验一. Tensorflow编程实验**
-> （纯文本为课程资料，本地保留，不入库）
+> 规格文档：原始 .docx / .pptx 因版权仅本地保留，不入库，说明见 [docs/README.md](../../docs/README.md)
+> 技术报告：[`reports/01b-alexnet-classification.md`](../../reports/01b-alexnet-classification.md)
 
 ---
 
-## 一、实验任务与目的
+## 1. 任务定义
 
-**题目原文**
+**任务描述**
 
 > 基于 tensorflow 的框架，搭建一个基础的 AlexNet 的网络模型，对图像进行分类。
 > 具体要求为，编写程序实现**输入一张图像，输出图像的类别**，使用**两种不同的激活函数**
 > 进行比较，**ReLU 以及任意另一种**，使用**两种不同的学习率**进行比较。
 
-**拆解成三件事**
+**拆解**
 
-| # | 要求 | 本实验的做法 | 对应文件 |
+| # | 要求 | 本模块的做法 | 对应文件 |
 |:---:|---|---|---|
 | 1 | 输入一张图像 → 输出类别 | `predict.py`：打印类别序号、英文名、中文名、置信度、top-3 | [`code/predict.py`](code/predict.py) |
 | 2 | 两种激活函数对比（ReLU + 另一种） | ReLU vs **LeakyReLU**（alpha=0.1） | [`code/alexnet.py`](code/alexnet.py) |
@@ -26,7 +26,7 @@
 
 ---
 
-## 二、目录结构
+## 2. 目录结构
 
 ```
 experiments/01_TensorFlow_AlexNet/
@@ -41,7 +41,7 @@ experiments/01_TensorFlow_AlexNet/
 │  ├─ test_pipeline.py  # 管线自检（74 项断言）
 │  ├─ test_cli.py       # ★ 用合成数据跑通 train→evaluate→compare→predict 命令行链路
 │  ├─ make_predict_samples.py  # 生成报告图 1-5（含跨数据集演示）
-│  └─ (可选) train.txt 等中间产物不放这里，本实验不用
+│  └─ (可选) train.txt 等中间产物不放这里，本模块不用
 ├─ models/              # 四组权重（<run>.h5 最终、<run>_best.h5 验证集最优）
 ├─ logs/                # 每组一个目录：TensorBoard events + checkpoint + history.csv
 ├─ outputs/
@@ -67,7 +67,7 @@ experiments/01_TensorFlow_AlexNet/
 | `compare.py` | 四组汇总与出图 | 否（出图需 matplotlib）|
 | `test_pipeline.py` | 全流程自检（74 项）| 部分 |
 | `test_cli.py` | **命令行入口**冒烟测试（29 项，用合成数据）| **是** |
-| `make_predict_samples.py` | 生成报告图 1-5「预测结果示例」，并做**跨数据集**演示（把实验一的真实猫照片喂给分类模型）| **是** |
+| `make_predict_samples.py` | 生成报告图 1-5「预测结果示例」，并做**跨数据集**演示（把 01b 的真实猫照片喂给分类模型）| **是** |
 
 > `data.py --selftest`、`evaluate.py --selftest`、`predict.py --selftest`、`compare.py --selftest`
 > **都不需要 TensorFlow**，可以在只装了 numpy 的环境里先跑通逻辑。
@@ -85,9 +85,9 @@ experiments/01_TensorFlow_AlexNet/
 
 ---
 
-## 三、环境
+## 3. 运行环境
 
-**直接复用实验一（目标检测）已建好的环境**，两者依赖完全一致：
+**直接复用 01b（目标检测）已建好的环境**，两者依赖完全一致：
 
 ```powershell
 $TF = ".\envs\pcd01_tf\Scripts\python.exe"   # 在仓库根目录执行
@@ -106,7 +106,7 @@ python envs\setup_tf_env.py
 
 ---
 
-## 四、数据集：CIFAR-10
+## 4. 数据集：CIFAR-10
 
 | 项目 | 数值 |
 |---|---|
@@ -144,11 +144,11 @@ dog 狗 / frog 青蛙 / horse 马 / ship 船 / truck 卡车
 
 ---
 
-## 五、模型：基础 AlexNet
+## 5. 模型：基础 AlexNet
 
 保留 AlexNet 的**定义性拓扑**：5 个卷积 + 3 个全连接。
 
-| 层 | 本实验配置 |
+| 层 | 本模块配置 |
 |---|---|
 | 输入 | 32×32×3 |
 | conv1 | 64 @ 3×3, s1 → MaxPool 3×3 s2 |
@@ -160,9 +160,9 @@ dog 狗 / frog 青蛙 / horse 马 / ship 船 / truck 卡车
 | 正则 | L2 weight decay 5e-4（加在卷积核与全连接核上）|
 | 参数量 | **4.62 M** |
 
-### 与原论文的三处差异（报告里必须写明）
+### 与原论文的三处差异（技术报告已逐项说明）
 
-| 项 | 原论文 | 本实验 | 原因 |
+| 项 | 原论文 | 本模块 | 原因 |
 |---|---|---|---|
 | 输入尺寸 / 首层卷积 | 224×224 / 11×11 stride 4 | 32×32 / 3×3 stride 1 | CIFAR-10 是 32×32；11×11 在 32×32 上无法使用 |
 | 全连接宽度 | 4096 / 4096 | 512 / 512 | 原尺寸下 FC 占绝大部分参数，是 CPU 上的主要瓶颈 |
@@ -170,11 +170,11 @@ dog 狗 / frog 青蛙 / horse 马 / ship 船 / truck 卡车
 
 > **weight decay 的实现方式**：用 **L2 正则**，而不是 `SGD(decay=...)`。
 > 因为 Keras 的 `decay` 是按 `lr/(1+decay*iter)` 让学习率随迭代下降的，
-> 那样"恒定学习率"这个前提就不成立了，会污染本实验对学习率的对比。
+> 那样"恒定学习率"这个前提就不成立了，会污染本模块对学习率的对比。
 
 ---
 
-## 六、四组对比实验
+## 6. 对照实验设计
 
 | run_name | 激活函数 | 学习率 |
 |---|---|---|
@@ -194,7 +194,7 @@ dog 狗 / frog 青蛙 / horse 马 / ship 船 / truck 卡车
 
 ---
 
-## 七、运行步骤
+## 7. 运行
 
 > 下面用 `$TF` 代表 TF 解释器：
 > `.\envs\pcd01_tf\Scripts\python.exe`（在仓库根目录执行）
@@ -244,7 +244,7 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
     --act leaky_relu --run-name leakyrelu-lr0.001 --report
 ```
 
-### 5. 用训练好的模型做预测（题目要求的核心功能）
+### 5. 用训练好的模型做预测
 
 ```powershell
 # 单张
@@ -267,12 +267,12 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
 
 ---
 
-## 八、训练速度（本机 CPU 实测）
+## 8. 训练吞吐（本机 CPU 实测）
 
 | AlexNet 变体 | 参数量 | 每图耗时 | 一个 epoch（5 万张）|
 |---|---:|---:|---:|
 | 标准通道 96/256/384/384/256 | 4.8 M | 7.6 ms | 6.3 分钟 |
-| **本实验采用：64/192/384/256/256** | **4.6 M** | **约 4~5 ms** | **约 3.5 分钟** |
+| **本模块采用：64/192/384/256/256** | **4.6 M** | **约 4~5 ms** | **约 3.5 分钟** |
 | 轻量通道 + 无 BN | 3.7 M | 3.4 ms | 2.8 分钟 |
 
 **四组合计（每组 15 epoch）**：
@@ -287,7 +287,7 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
 
 ---
 
-## 九、结果
+## 9. 结果
 
 四组各训 15 epoch，测试集 10000 张，总用时 **3.25 小时**（CPU）。
 
@@ -309,7 +309,7 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
 
 **最优先组合**：ReLU + lr = 0.01，测试准确率 **81.85%**。
 
-**三条核心结论**（详细分析见[报告](../../reports/01b_AlexNet图像分类_实验报告.md)第六、七、九节）：
+**三条核心结论**（详细分析见[报告](../../reports/01b-alexnet-classification.md)第六、七、九节）：
 
 1. **激活函数没有显著差异**（0.96 个百分点，且方向随学习率翻转）。
    推测原因是 BN 已经解决了 ReLU "神经元死亡"的问题，LeakyReLU 想解决的事被 BN 做掉了；
@@ -320,7 +320,7 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
    18.0% 被误判为 dog、10.4% 为 deer，且与 dog 构成双向混淆。
    根因是 32×32 分辨率下猫狗的外观线索大量丢失。
 
-**跨数据集验证**：把实验一（目标检测）`datasets/cat_face/` 里
+**跨数据集验证**：把 01b（目标检测）`datasets/cat_face/` 里
 **4 张未参与训练的真实猫照片**喂给模型，**3 张判为 `cat`** ——
 说明模型学到的是猫的视觉特征，不只是拟合 CIFAR-10 的分布。
 
@@ -335,11 +335,11 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
 | 对比表 | `outputs/compare/summary.{csv,md}` |
 | 对比图 | `outputs/compare/curves_{val_acc,loss}.png`、`test_accuracy.png` |
 | 预测示例 | `outputs/predict/samples/` 与 `reports/figures/01b_predict_samples.png` |
-| 报告 | [`reports/01b_AlexNet图像分类_实验报告.md`](../../reports/01b_AlexNet图像分类_实验报告.md) |
+| 技术报告 | [`reports/01b-alexnet-classification.md`](../../reports/01b-alexnet-classification.md) |
 
 ---
 
-## 十、常见问题
+## 10. 故障排查
 
 | 现象 | 原因与处理 |
 |---|---|
@@ -354,7 +354,7 @@ python experiments\01_TensorFlow_AlexNet\code\test_pipeline.py --no-tf
 
 ---
 
-## 十一、一键流程
+## 11. 一键运行
 
 ```powershell
 $TF = ".\envs\pcd01_tf\Scripts\python.exe"   # 在仓库根目录执行

@@ -1,10 +1,8 @@
-# 实验一 · 目标检测：猫脸检测 实验报告
-
-**姓名**：　　　　　　**学号**：　　　　　　**班级**：　　　　　　**日期**：
+# 01b · 目标检测：猫脸检测（YOLOv3） 技术报告
 
 ---
 
-## 一、实验目的
+## 1. 目标
 
 1. 了解数据收集以及数据集制作等系列过程；
 2. 使用卷积神经网络模型对数据进行训练、测试；
@@ -12,7 +10,7 @@
 
 ---
 
-## 二、实验环境
+## 2. 运行环境
 
 ### 2.1 硬件与系统
 
@@ -42,19 +40,19 @@
 
 ### 2.3 关于"只能用 CPU 训练"
 
-指导书给出的三种环境都依赖 GPU 加速，但本机 GPU 与 TensorFlow 的 CUDA 版本对不上：
+上游规格给出的三种环境都依赖 GPU 加速，但本机 GPU 与 TensorFlow 的 CUDA 版本对不上：
 
 | TensorFlow 版本 | 绑定 CUDA | 支持的最高 GPU 架构 | 能否使用 sm_89 |
 |---|---|---|---|
-| 2.3.0（指导书环境一） | CUDA 10.1 | sm_75（Turing） | ✗ |
+| 2.3.0（上游规格环境一） | CUDA 10.1 | sm_75（Turing） | ✗ |
 | 2.10.0（Windows 上最后一个有 GPU 支持的版本） | CUDA 11.2 | sm_86（Ampere） | ✗ |
 
 RTX 4060 属于 Ada 架构（sm_89），需要 CUDA 11.8 及以上；而 TensorFlow 从 2.11 起
-取消了 Windows 原生 GPU 支持。因此本实验的 TensorFlow 训练**只能使用 CPU**。
+取消了 Windows 原生 GPU 支持。因此本模块的 TensorFlow 训练**只能使用 CPU**。
 
-### 2.4 与指导书环境的差异及原因
+### 2.4 与上游规格环境的差异及原因
 
-指导书环境一是 `python 3.7/3.8 + tensorflow 2.3.0 + keras 2.4.3`。本实验最初按该配置搭建，
+上游规格环境一是 `python 3.7/3.8 + tensorflow 2.3.0 + keras 2.4.3`。本模块最初按该配置搭建，
 但在本机上无法完成安装，原因是：
 
 > venv 中 Python 3.8 的 OpenSSL 1.1.1 访问 pypi.org 及国内镜像时**间歇性 TLS 握手失败**，
@@ -68,7 +66,7 @@ keras-yolo3 的改动最小。实测只需补一个兼容层（`code/keras_compa
 
 ---
 
-## 三、实验原理
+## 3. 原理
 
 ### 3.1 YOLOv3 的基本思想
 
@@ -94,7 +92,7 @@ $$L = L_{box} + L_{obj} + L_{cls}$$
 - $L_{obj}$：置信度损失，正样本用交叉熵、负样本用二值交叉熵，并对无目标的框做降权（`ignore_thresh`）；
 - $L_{cls}$：类别损失，多标签二值交叉熵。
 
-本实验只有 `cat` 一个类别，因此 $L_{cls}$ 只有一路。
+本模块只有 `cat` 一个类别，因此 $L_{cls}$ 只有一路。
 
 ### 3.3 评价指标
 
@@ -106,11 +104,11 @@ $$L = L_{box} + L_{obj} + L_{cls}$$
 | AP | PR 曲线下的面积（VOC2010 之后的 all-point 插值法） |
 | mAP | 各类别 AP 的平均值 |
 
-判定一个预测框为 TP 的条件是：与某个**尚未被匹配**的同类别真值框的 IoU ≥ 阈值（本实验取 0.5）。
+判定一个预测框为 TP 的条件是：与某个**尚未被匹配**的同类别真值框的 IoU ≥ 阈值（本模块取 0.5）。
 
 ---
 
-## 四、数据集
+## 4. 数据集
 
 数据集来自课程提供的猫咪图片（原为 `VOC2007` 目录，已整理到 `datasets/cat_face/`），
 采用 **Pascal VOC2007** 格式组织。
@@ -139,7 +137,7 @@ $$L = L_{box} + L_{obj} + L_{cls}$$
 原始数据**只提供了 1 个标注文件**（`1.xml`），其余 204 张图片没有任何标注。
 YOLOv3 从头训练时未标注的图片会被当成纯背景，因此必须先把标注补齐。
 
-由于手工标注 200 多张图片工作量很大，本实验采用**先自动预标注、再人工修正**的流程：
+由于手工标注 200 多张图片工作量很大，本模块采用**先自动预标注、再人工修正**的流程：
 
 | 步骤 | 做法 | 产出 |
 |---|---|---|
@@ -148,7 +146,7 @@ YOLOv3 从头训练时未标注的图片会被当成纯背景，因此必须先�
 | ③ 校验 | `dataset_stats.py` 统计覆盖面，`list_remaining.py` 用框坐标比对确认无遗漏 | 覆盖率 100% |
 
 > **为什么必须人工修正**：COCO 数据集只有 `cat`（整只猫）这个类别，
-> 没有 `cat face`（猫脸）。模型给出的框是整个猫的身体，而本实验的任务是猫脸检测，
+> 没有 `cat face`（猫脸）。模型给出的框是整个猫的身体，而本模块的任务是猫脸检测，
 > 所以自动预标注只能作为**起点**，框必须人工收紧。
 >
 > **一个实际踩到的坑**：本来打算用 XML 里的 `source/database` 字段判断
@@ -156,7 +154,6 @@ YOLOv3 从头训练时未标注的图片会被当成纯背景，因此必须先�
 > 于是这个字段在人工处理后就完全失去了区分能力（实测 205 个 XML 全是 `Unknown`）。
 > 正确做法是**把当前框坐标与预标注清单逐一比对**——见 `auto_annotate.py`
 > 的 `load_manifest_boxes()` 与 `code/list_remaining.py`。
-
 
 ### 4.3 每图目标数分布
 
@@ -220,14 +217,14 @@ YOLOv3 从头训练时未标注的图片会被当成纯背景，因此必须先�
 > 全部 205 张图都已完成标注，因此三个划分之和等于图片总数，没有遗漏。
 > 划分用固定随机种子（`seed=42`），结果可复现。
 
-> **对指导书的一处修正**：指导书 `test.py` 里写的是
+> **对上游规格的一处修正**：上游规格 `test.py` 里写的是
 > `trainval_percent = 0.1` / `train_percent = 0.9`，实际得到 train 90%、test 9%、val 1%，
 > 且把 train 的补集写进了 `test.txt`，语义是混乱的。
-> 本实验按 VOC 惯例改为 train 81%、val 9%、test 10%。
+> 本模块按 VOC 惯例改为 train 81%、val 9%、test 10%。
 
 ---
 
-## 五、实验步骤
+## 5. 实现过程
 
 ### 5.1 获取基础代码
 
@@ -267,7 +264,7 @@ python code/voc_annotation.py    # 生成 train.txt / val.txt / test.txt 与 voc
 ### 5.4 修改参数文件
 
 `yolov3.cfg` 里有 3 处 `[yolo]` 层（对应 3 个尺度），每处都要改 `classes`，
-且每处**前面紧邻的 `[convolutional]` 层**要改 `filters`。本实验 `classes = 1`，故：
+且每处**前面紧邻的 `[convolutional]` 层**要改 `filters`。本模块 `classes = 1`，故：
 
 ```
 filters = 3 × (5 + 1) = 18
@@ -304,8 +301,8 @@ step 4  8.03 s  loss= 4789.59
 step 5  8.00 s  loss= 3719.84
 ```
 
-参照：指导书在 GTX960M 上处理 230 张图用 900+ 秒，本机 CPU 上 200 epoch 约 7 小时，
-属于同一量级，因此 CPU 训练在本实验规模下是可接受的。
+参照：上游规格在 GTX960M 上处理 230 张图用 900+ 秒，本机 CPU 上 200 epoch 约 7 小时，
+属于同一量级，因此 CPU 训练在本模块规模下是可接受的。
 
 正式训练：
 
@@ -332,7 +329,7 @@ step 5  8.00 s  loss= 3719.84
 & 'envs\pcd01_tf\Scripts\python.exe' code/detect_images.py --weights models/<权重>.h5
 ```
 
-默认对指导书要求的 8 张演示图（`datasets/cat_face/test/`）做检测，结果图保存到
+默认对上游规格要求的 8 张演示图（`datasets/cat_face/test/`）做检测，结果图保存到
 `outputs/detect/<权重名>/`，同时导出检测框坐标 CSV。
 
 ### 5.7 评价指标
@@ -343,14 +340,14 @@ python code/evaluate_detection.py --pred outputs/detect/<权重名>/detections.c
 
 ### 5.8 附加实验：TensorBoard 可视化
 
-指导书的附加实验要求跟踪训练全过程的信息（每层参数的变化与分布、
+上游规格的附加实验要求跟踪训练全过程的信息（每层参数的变化与分布、
 每轮参数更新后模型在训练集/验证集上的准确率、损失值变化等）。
 
 ```bash
 tensorboard --logdir experiments/01_ObjectDetection_YOLOv3/logs/<run_name>
 ```
 
-**指导书列出的注意事项**：
+**上游规格列出的注意事项**：
 
 - 电脑名称必须是**英文**，含中文会导致日志文件后缀乱码；
 - 浏览器建议用 **Chrome**，否则生成的网址可能打不开；
@@ -359,7 +356,7 @@ tensorboard --logdir experiments/01_ObjectDetection_YOLOv3/logs/<run_name>
 
 ---
 
-## 六、实验结果
+## 6. 结果
 
 ### 6.1 流程验证（10 epoch 冒烟测试，非最终结果）
 
@@ -367,7 +364,7 @@ tensorboard --logdir experiments/01_ObjectDetection_YOLOv3/logs/<run_name>
 > 整条链路验证一遍，确认脚本与环境都没问题。正式结果见 6.2 之后。
 >
 > 注意到该测试用的是**自动预标注的"整只猫"框**（还没人工收紧到猫脸），
-> 且 epoch 数远小于指导书建议的 200，所以指标显著偏低是预期的。
+> 且 epoch 数远小于上游规格建议的 200，所以指标显著偏低是预期的。
 
 **训练**（`--epochs 10 --run-name smoke_test`）：
 
@@ -517,7 +514,7 @@ tensorboard --logdir experiments/01_ObjectDetection_YOLOv3/logs/<run_name>
 
 ---
 
-## 七、结果分析
+## 7. 结果与分析
 
 ### 7.1 检测效果分析
 
@@ -606,7 +603,7 @@ val_loss 在同一个 epoch 上相差上百倍。
 
 ---
 
-## 八、遇到的问题与解决办法
+## 8. 问题与处理
 
 ### 8.1 环境搭建
 
@@ -622,7 +619,7 @@ val_loss 在同一个 epoch 上相差上百倍。
 
 keras-yolo3 写于 Keras 2.2~2.4 时代，之后 Keras 把不少层从子模块提升到了 `keras.layers`
 顶层，旧的子模块路径要么被删、要么还在但不再导出这些名字。**为了不改动上游源码**
-（保持 `yolo3/model.py`、`yolo.py` 原样便于对照与还原），本实验加了一个兼容层
+（保持 `yolo3/model.py`、`yolo.py` 原样便于对照与还原），本模块加了一个兼容层
 `code/keras_compat.py`，在导入之前把缺失的名字补回去：
 
 | 报错 | 原因 | 兼容层处理 |
@@ -639,7 +636,7 @@ keras-yolo3 写于 Keras 2.2~2.4 时代，之后 Keras 把不少层从子模块�
 
 | 问题 | 原因 | 解决办法 |
 |---|---|---|
-| 指导书 `test.py` 的划分比例写反 | `trainval_percent = 0.1` / `train_percent = 0.9`，实际得到 train 90%、test 9%、val 1%，且把 train 的补集写进了 `test.txt` | 改用 `make_imagesets.py`，按 VOC 惯例 train 81% / val 9% / test 10% |
+| 上游规格 `test.py` 的划分比例写反 | `trainval_percent = 0.1` / `train_percent = 0.9`，实际得到 train 90%、test 9%、val 1%，且把 train 的补集写进了 `test.txt` | 改用 `make_imagesets.py`，按 VOC 惯例 train 81% / val 9% / test 10% |
 | cfg 里有 3 处 `classes` 和 3 处 `filters` 容易漏改 | 每个 `[yolo]` 层有一个 `classes`，`filters` 在它前面那个 `[convolutional]` 层 | 用 `patch_yolov3_cfg.py` 自动改并复核 |
 | `2007_train.txt` 要手动改名 | 上游 `voc_annotation.py` 写死了 `VOC2007/` 前缀 | 本仓库的 `voc_annotation.py` 直接生成目标文件名 |
 | **标注文件的分隔符搞错**<br>（自己踩的坑） | keras-yolo3 的 `get_random_data` 是 `line = annotation_line.split()`，**按空白切分**，`line[0]` 必须是纯路径；一开始把整行写成了逗号分隔，导致 `Image.open` 拿到整行 | 改成「图片路径 + 空格 + 每个框（框内用逗号）」；并在 `test_pipeline.py` 里加了断言：行首字段不含逗号且能被 PIL 打开 |
@@ -670,8 +667,8 @@ keras-yolo3 写于 Keras 2.2~2.4 时代，之后 Keras 把不少层从子模块�
 |---|---|
 | 保存最优 checkpoint 而非当前权重 | 从 checkpoint 文件名里解析 `val_loss` 找出最小的那个，加载回模型再保存；无可用 checkpoint 时才退回保存当前权重 |
 | 保存后检查 NaN | 扫描 h5 权重，有 NaN 就明确报错、指出可用的历史 checkpoint、返回值非 0 |
-| 梯度裁剪 | 改用 `Adam(clipnorm=5.0)`；可用 `--clipnorm 0` 关掉，回到与指导书完全一致的行为 |
-| **加回 ReduceLROnPlateau** | 上游 keras-yolo3 的 `train.py` **本来就有**这个回调，指导书提供的版本把它去掉了。实测去掉之后 `val_loss` 长期卡在 20 附近不再下降，随后就出现 NaN 发散 |
+| 梯度裁剪 | 改用 `Adam(clipnorm=5.0)`；可用 `--clipnorm 0` 关掉，回到与上游规格完全一致的行为 |
+| **加回 ReduceLROnPlateau** | 上游 keras-yolo3 的 `train.py` **本来就有**这个回调，上游规格提供的版本把它去掉了。实测去掉之后 `val_loss` 长期卡在 20 附近不再下降，随后就出现 NaN 发散 |
 | 新增可调参数 | `--anchors`、`--ignore-thresh`、`--lr-patience`、`--no-lr-plateau` |
 
 修复后重跑，20 个 epoch 全程无 NaN，且保存的 `trained_weights.h5` 经检查为
@@ -684,7 +681,7 @@ keras-yolo3 写于 Keras 2.2~2.4 时代，之后 Keras 把不少层从子模块�
 **（1）验证集只覆盖了一部分，`val_loss` 方差极大**
 
 `validation_steps` 原本写成 `len(validation_lines) // batch_size`，
-本实验是 `18 // 10 = 1`，也就是**18 张验证图只验证了 10 张**，另外 8 张从不参与。
+本模块是 `18 // 10 = 1`，也就是**18 张验证图只验证了 10 张**，另外 8 张从不参与。
 损失又是对整个 batch 求和，单张"难图"就能主导整轮结果。
 
 证据：两次**完全相同配置**的训练，在同一个 epoch 上 `val_loss` 相差上百倍
@@ -726,7 +723,7 @@ checkpoint 文件名也是 `ep001`。直接用 `step` 画图会导致横轴和"�
 
 ---
 
-## 九、实验结论与改进方向
+## 9. 结论与改进方向
 
 ### 9.1 结论
 
@@ -758,9 +755,9 @@ checkpoint 文件名也是 `ep001`。直接用 `step` 画图会导致横轴和"�
   而不是 epoch 数。本次实验中最关键的一步是**把 anchors 换成按本数据集
   聚类的版本**——同样 20 个 epoch 下 AP 就从 0.0011 提到 0.0752（68 倍），
   详见表下文的控制变量对照。
-- 另外，指导书没有给学习率调度（去掉了上游原有的 `ReduceLROnPlateau`），
+- 另外，上游规格没有给学习率调度（去掉了上游原有的 `ReduceLROnPlateau`），
   实测这会让 `val_loss` 在第 90 epoch 附近失去下降趋势并最终数值发散（NaN）。
-  加回该回调 + 梯度裁剪后，200 epoch 全程稳定。这属于**指导书配置上的一个缺陷**，
+  加回该回调 + 梯度裁剪后，200 epoch 全程稳定。这属于**上游规格配置上的一个缺陷**，
   已在 8.4 节记录。
 
 **一个方法层面的结论**：**`val_loss` 不能用来挑选最终模型**。
@@ -816,7 +813,7 @@ checkpoint 文件名也是 `ep001`。直接用 `step` 画图会导致横轴和"�
 **对照实验（同 epoch、同标签、同超参，只改 anchors）**：
 
 为验证聚类是否真的有用，做了控制变量对比。注意必须**同 epoch 数**比较，
-且必须用**同一套标签** —— 本实验先后做错过一次（拿整猫标签的 10 epoch 结果
+且必须用**同一套标签** —— 本模块先后做错过一次（拿整猫标签的 10 epoch 结果
 去比猫脸标签的结果），结论完全不可用，这里给出修正后的正确对照：
 
 | 模型 | anchors | epoch | 预测数 | TP | FP | FN | Precision | Recall | AP |
@@ -850,11 +847,11 @@ python code/train.py --anchors code/model_data/yolo_anchors_catface.txt \
 
 2. **数据增强**：`get_random_data` 已带随机缩放、平移、翻转，
    可再加颜色抖动、马赛克增强等。
-3. **扩充数据**：指导书实验环境用了 230 张，本实验 205 张；
+3. **扩充数据**：上游规格实验环境用了 230 张，本模块 205 张；
    可再收集图片或利用 CIFAR-10 的 cat 类。
 4. **换用更小的模型**：CPU 训练下可改用 Tiny-YOLOv3（`--backbone tiny`）
    或把 `input_shape` 降到 320，以时间换可行性。
-5. **迁移学习**：虽然指导书要求"从头训练"，但用 COCO 预训练权重微调
+5. **迁移学习**：虽然上游规格要求"从头训练"，但用 COCO 预训练权重微调
    （`--pretrained`）在小数据集上通常能显著提升，可作为对照实验。
 
 ---

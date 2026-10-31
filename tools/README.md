@@ -2,7 +2,7 @@
 
 ## `check_datasets.py` —— 数据集自检
 
-检查 4 个实验的数据是否放好、命名是否合规。**只依赖 Python 标准库**，所以在还没装任何第三方库时就能跑。
+检查各模块的数据是否放好、命名是否合规。**只依赖 Python 标准库**，所以在还没装任何第三方库时就能跑。
 
 ```bash
 python tools/check_datasets.py                          # 检查全部
@@ -38,7 +38,7 @@ chcp 65001
 
 ## labelImg 相关工具
 
-实验一（目标检测）用 LabelImg 人工标注，**labelImg 1.8.3 与新版 PyQt5 有 8 处类型不兼容**，
+01b（目标检测）用 LabelImg 人工标注，**labelImg 1.8.3 与新版 PyQt5 有 8 处类型不兼容**，
 会在画框/滚动/缩放时崩溃。这几个脚本用来修补、验证与启动。
 
 ```powershell
@@ -74,7 +74,7 @@ $PY = "python"   # 换成装了 labelImg 的解释器
 python tools/dump_docx.py "docs/course_materials/目标检测实验指导书.docx" > docs/extracted_text/目标检测实验指导书.txt
 ```
 
-需要 `python-docx`。用途：`docs/course_materials/` 下的指导书正文在 Word 里不好搜，
+需要 `python-docx`。用途：`docs/course_materials/` 下的原始文档正文在 Word 里不好搜，
 转成文本后可以直接 `grep`。
 
 > 注意：**图片里的信息（如安装步骤截图）不会被抽取**，关键信息仍需回看原始 docx。

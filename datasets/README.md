@@ -6,9 +6,9 @@
 
 ---
 
-## 0. `classification/` —— 实验一（TensorFlow）图像分类
+## 0. `classification/` —— 01a 图像分类（TensorFlow）
 
-题目《实验题目-4.docx》实验一「Tensorflow编程实验」用 **CIFAR-10**（32×32 彩色 10 类）。
+01a「AlexNet 图像分类」用 **CIFAR-10**（32×32 彩色 10 类）。
 
 ```
 datasets/classification/
@@ -21,7 +21,7 @@ datasets/classification/
 **自动下载**（带断点续传、多镜像、SHA256 校验）：
 
 ```powershell
-$TF = "D:\projects\Professional_Comprehensive_Design\envs\pcd01_tf\Scripts\python.exe"
+$TF = ".\envs\pcd01_tf\Scripts\python.exe"
 & $TF experiments\01_TensorFlow_AlexNet\code\data.py --download
 ```
 
@@ -32,16 +32,16 @@ $TF = "D:\projects\Professional_Comprehensive_Design\envs\pcd01_tf\Scripts\pytho
 
 ---
 
-## 1. `cat_face/` —— 实验一 目标检测（猫咪/猫脸）
+## 1. `cat_face/` —— 01b 目标检测（猫脸）
 
-指导书以 `keras-yolo3` 为基础，数据集组织方式遵循 **Pascal VOC2007** 格式。
+数据集组织以 `keras-yolo3` 为基础，遵循 **Pascal VOC2007** 格式。
 
 ```
 datasets/cat_face/
 ├─ JPEGImages/            # 原始图片：1.jpg, 2.jpg, ...（当前 205 张）
 ├─ Annotations/           # LabelImg 生成的标注：1.xml, 2.xml, ...（当前 1 个）
 ├─ ImageSets/Main/        # trainval/train/val/test 索引，由 make_imagesets.py 生成
-├─ test/                  # 检测演示图 8 张（指导书 detect_img 的输入）
+├─ test/                  # 检测演示图 8 张（`detect_img` 的输入）
 ├─ raw/                   # 网盘下载的原始压缩包/未整理图片，先放这里
 ├─ predefined_classes.txt # LabelImg 预设类别，内容为 cat
 └─ README.md
@@ -53,10 +53,10 @@ datasets/cat_face/
 | 位置 | 放什么 | 命名要求 |
 |---|---|---|
 | `raw/` | 从网盘下载的压缩包、未整理的猫咪图片 | 随意，仅作暂存 |
-| `JPEGImages/` | 用于训练/验证的图片 | **纯英文/数字**，如 `000001.jpg`。指导书明确要求「图片以及相关文件夹命名应避免使用汉字」 |
+| `JPEGImages/` | 用于训练/验证的图片 | **纯英文/数字**，如 `000001.jpg`。命名规范要求「图片以及相关文件夹命名应避免使用汉字」 |
 | `Annotations/` | 与图片同名的 `.xml` 标注文件 | 与 `JPEGImages/` 中的文件名**一一对应**（仅扩展名不同） |
 | `ImageSets/Main/` | `trainval.txt` / `train.txt` / `val.txt` / `test.txt` | 由 `make_imagesets.py` 生成，每行一个不含扩展名的文件名 |
-| `test/` | 检测演示图，`yolo_video.py --image` 的输入 | 指导书里对应 `VOC2007/test/*.jpg` |
+| `test/` | 检测演示图，`yolo_video.py --image` 的输入 | 对应上游 `VOC2007/test/*.jpg` |
 
 ### 当前状况（重要）
 
@@ -93,14 +93,14 @@ python make_imagesets.py     # 生成 ImageSets/Main 下的 4 个索引文件
 python voc_annotation.py     # 生成 train.txt / val.txt / test.txt 与 voc_classes.txt
 ```
 
-这两个脚本替代了指导书里的 `test.py` 和 keras-yolo3 自带的 `voc_annotation.py`，
+这两个脚本替代了上游的 `test.py` 和 keras-yolo3 自带的 `voc_annotation.py`，
 **不需要再手动去掉 `2007_` 前缀**，并且会主动报告缺标注的图片。
 
 ### 关键坑
 - 类别数必须三处一致：`model_data/voc_classes.txt`、`yolov3.cfg` 中 3 处 `yolo` 层的
-  `classes` 与 `filters`（`filters = 3 * (5 + len(classes))`，本实验为 `classes=1`、`filters=18`）。
+  `classes` 与 `filters`（`filters = 3 * (5 + len(classes))`，本模块为 `classes=1`、`filters=18`）。
   否则会出现维度不匹配或检测框全错。
-- 指导书原版 `test.py` 里的 `trainval_percent = 0.1` / `train_percent = 0.9` **写反了**，
+- 上游 `test.py` 里的 `trainval_percent = 0.1` / `train_percent = 0.9` **写反了**，
   本仓库的 `make_imagesets.py` 已按 VOC 惯例修正（trainval 90%、test 10%）。
 
 ---
@@ -123,7 +123,7 @@ datasets/tracking_videos/
 - **OTB-100 / OTB-50**：经典单/多目标跟踪基准，自带真值框，最适合算 OTB 指标。
 - **VOT** 数据集：自带 rotated bounding box，用于算 VOT 的 accuracy / robustness / EAO。
 - **MOTChallenge**（如 MOT16/17）：多人多目标场景，自带 `gt.txt`，用于算 MOTA/MOTP/IDF1。
-- **`chaplin.mp4`**（指导书示例用）：文档**没有提供文件也没有下载链接**，需自行准备。
+- **`chaplin.mp4`**（上游示例）：文档**没有提供文件也没有下载链接**，需自行准备。
   首帧固定框为 `bbox = (287, 23, 86, 320)`（`x, y, w, h`）。
 - 也可以自行用手机拍摄多目标视频；**但只有自标注真值才能算指标**，否则只能在无真值时比较跟踪速度与目视稳定性。
 
@@ -151,7 +151,7 @@ datasets/TVSum/
 | `annotations/` | `ydata-tvsum50-anno.tsv`（逐秒评分）、`ydata-tvsum50-info.tsv`（视频元信息、类别、时长） | 从 TVSum 官方仓库获取 |
 | `features/` | 视频特征 `.npy`，形状通常为 `(帧数, 1024)` 或 `(帧数, 2048)` | 若直接跑 FCSN 需要；也可先跑特征提取脚本生成 |
 
-### 本实验要求
+### 数据要求
 - 从 50 段中 **选取 10 段** 测试，其余可用于训练。
 - 每段视频的摘要输出 **保存到单独文件夹**，例如 `experiments/03_VideoSummarization_FCSN/outputs/summary/video_01/`。
 - 计算这 10 段的 **Precision / Recall / F-score**（在摘要比例固定的设定下，通常取 `K = 15%` 的帧作为摘要）。

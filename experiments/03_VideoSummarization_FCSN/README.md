@@ -1,10 +1,10 @@
-# 实验 03 · 视频摘要：FCSN + TVSum
+# 03 · 视频摘要：FCSN on TVSum
 
-> 题目来源：《实验题目-4.docx》实验六（课程资料，本地保留，不入库）
+> 规格文档：原始 .docx / .pptx 因版权仅本地保留，不入库，说明见 [docs/README.md](../../docs/README.md)
 
 ---
 
-## 一、实验任务与要求
+## 1. 任务定义
 
 **任务**：基于 **FCSN 网络** 以及 **TVSum 数据集** 训练视频摘要模型。
 
@@ -16,7 +16,7 @@
 
 ---
 
-## 二、目录结构
+## 2. 目录结构
 
 ```
 experiments/03_VideoSummarization_FCSN/
@@ -44,7 +44,7 @@ experiments/03_VideoSummarization_FCSN/
 
 ---
 
-## 三、实验环境
+## 3. 运行环境
 
 ```bash
 conda create -n pcd03 python=3.8 -y
@@ -53,13 +53,13 @@ pip install -r requirements.txt
 ```
 
 说明：
-- FCSN 原论文实现基于 TensorFlow 1.x；本实验目录以 **PyTorch** 复现为主（更易安装、便于调试）。
+- FCSN 原论文实现基于 TensorFlow 1.x；本模块目录以 **PyTorch** 复现为主（更易安装、便于调试）。
   若坚持用 TF 版，请把 `requirements.txt` 中的 torch 换成 `tensorflow==1.15`，并注意 TF1 的 `contrib` 依赖。
 - 训练需要 GPU（建议 ≥6 GB 显存）。CPU 也可跑通，但很慢。
 
 ---
 
-## 四、数据准备
+## 4. 数据准备
 
 TVSum 数据放在 [`datasets/TVSum/`](../../datasets/TVSum/)，详细说明见 [datasets/README.md](../../datasets/README.md)。
 
@@ -96,7 +96,7 @@ FCSN 对 **片段** 打分而不是对帧打分，这样摘要更连贯。片段
 
 ---
 
-## 五、FCSN 模型简介
+## 5. 方法：FCSN
 
 **FCSN（Fully Convolutional Sequence Network）** 的核心思想：
 
@@ -110,7 +110,7 @@ FCSN 对 **片段** 打分而不是对帧打分，这样摘要更连贯。片段
 
 ---
 
-## 六、训练
+## 6. 训练
 
 ```bash
 python code/train.py --config configs/tvsum_fcsn.yaml
@@ -132,7 +132,7 @@ python code/train.py --config configs/tvsum_fcsn.yaml
 
 ---
 
-## 七、测试与摘要生成
+## 7. 推理与摘要生成
 
 ```bash
 # 1) 用训练好的模型对 10 段测试视频预测重要性分数
@@ -167,7 +167,7 @@ F-score   = 2 * Precision * Recall / (Precision + Recall)
 
 ---
 
-## 八、结果记录
+## 8. 结果
 
 | 项目 | 位置 |
 |---|---|
@@ -182,7 +182,7 @@ F-score   = 2 * Precision * Recall / (Precision + Recall)
 
 ---
 
-## 九、常见问题
+## 9. 故障排查
 
 | 现象 | 原因与解决 |
 |---|---|
@@ -195,7 +195,7 @@ F-score   = 2 * Precision * Recall / (Precision + Recall)
 
 ---
 
-## 十、参考
+## 10. 参考资料
 
 - FCSN 论文：Rochan et al., *Video Summarization Using Fully Convolutional Sequence Networks*, ECCV 2018
 - TensorFlow 参考实现：<https://github.com/remega/video_summarization_fcsn>

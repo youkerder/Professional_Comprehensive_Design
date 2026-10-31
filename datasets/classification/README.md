@@ -1,6 +1,6 @@
-# datasets/classification —— 实验一（TensorFlow）图像分类数据集
+# datasets/classification —— 01a 图像分类数据集
 
-> 本目录服务于实验一「TensorFlow 编程实验：AlexNet 图像分类」，
+> 本目录服务于 01a「AlexNet 图像分类」，
 > 与 `datasets/cat_face/`（目标检测）并列。
 
 ---
@@ -32,7 +32,7 @@
 | 9 | truck | 卡车 |
 
 > 选用 CIFAR-10 的一个附带好处：它本身就有 `cat` 类，
-> 与实验一（目标检测）的猫脸数据形成呼应。
+> 与 01b（目标检测）的猫脸数据形成呼应。
 
 ---
 
@@ -58,7 +58,7 @@ datasets/classification/cifar10/
 **推荐：让脚本自动下载**（带断点续传、多镜像、SHA256 校验）
 
 ```powershell
-$TF = "D:\projects\Professional_Comprehensive_Design\envs\pcd01_tf\Scripts\python.exe"
+$TF = ".\envs\pcd01_tf\Scripts\python.exe"
 & $TF experiments\01_TensorFlow_AlexNet\code\data.py --download
 ```
 

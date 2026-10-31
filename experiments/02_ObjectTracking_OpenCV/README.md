@@ -1,13 +1,13 @@
-# 实验 02 · 目标跟踪：OpenCV 多目标跟踪（已完成）
+# 02 · 多目标跟踪：OpenCV 跟踪器基准
 
-> 题目来源：《实验题目-4.docx》实验三「目标跟踪实验」+《目标跟踪实验指导书》+《使用 OpenCV 进行目标跟踪》
-> 实验报告：[reports/02_目标跟踪_实验报告.md](../../reports/02_目标跟踪_实验报告.md)（按实验模板结构改写）
+> 规格文档：原始 .docx / .pptx 因版权仅本地保留，不入库，说明见 [docs/README.md](../../docs/README.md)
+> 技术报告：[`reports/02-multi-object-tracking.md`](../../reports/02-multi-object-tracking.md)
 
 ---
 
-## 一、任务拆解与完成情况
+## 1. 任务与完成情况
 
-| # | 题目要求 | 本实验的做法 |
+| # | 任务要求 | 本模块的做法 |
 |:---:|---|---|
 | 1 | 基于 OpenCV 内置算法，**≥3 种**算法对**多目标**跟踪 | 6 种：KCF、CSRT、MedianFlow、MIL、Boosting、TLD；每帧 3 个目标同时跟踪（`cv2.legacy.MultiTracker`），另做一次「三个目标各用不同算法」的混用实验 |
 | 2 | **比较跟踪效率** | 单帧 `update()` 耗时（均值 / P95）、等效 FPS、`init` 耗时；13 次运行全部记录在 `outputs/metrics/summary.csv` |
@@ -16,7 +16,7 @@
 
 ---
 
-## 二、环境
+## 2. 运行环境
 
 **不要用系统默认 Python 3.14，也不要用 `C:\anaconda3`**：那里的 OpenCV 是 5.0.0 基础版，没有 `cv2.legacy` 命名空间，
 也就没有 `MultiTracker_create` 与经典跟踪器。
@@ -41,7 +41,7 @@ envs\pcd02_tracking\Scripts\python.exe -m pip install --no-cache-dir -r experime
 
 ---
 
-## 三、数据集（自建合成多目标序列）
+## 3. 数据集（自建合成多目标序列）
 
 `datasets/tracking_videos/`：两段 640×360、25 fps、300 帧（12 s）的视频，带精确真值。
 
@@ -69,7 +69,7 @@ sprite——纯色块会让 MedianFlow 无法初始化、CSRT 的尺度崩到 7�
 
 ---
 
-## 四、代码结构（10 个脚本，约 2270 行）
+## 4. 代码结构（10 个脚本，约 2270 行）
 
 ```
 experiments/02_ObjectTracking_OpenCV/
@@ -92,7 +92,7 @@ experiments/02_ObjectTracking_OpenCV/
 
 ---
 
-## 五、运行
+## 5. 运行
 
 先自检（确认本机 OpenCV 里哪些跟踪器真的能用），再跑全流程：
 
@@ -121,7 +121,7 @@ python make_report.py
 
 ---
 
-## 六、产物
+## 6. 输出产物
 
 | 位置 | 内容 |
 |---|---|
@@ -131,11 +131,11 @@ python make_report.py
 | `outputs/figures/` | 14 张图：success/precision 曲线、逐帧 IoU 时间线、轨迹对比、速度-精度、遮挡分档、定性拼图 |
 | `outputs/tables/` | 8 张表：速度、OTB 精度、MOT、遮挡分档（csv + md） |
 | `reports/figures/02_*.png`、`reports/tables/02_*.csv` | 报告引用的副本 |
-| `reports/02_目标跟踪_实验报告.md` | 实验报告（含 7 张图、9 张表） |
+| `reports/02-multi-object-tracking.md` | 技术报告（含 7 张图、9 张表） |
 
 ---
 
-## 七、关键结果（本机实测，详见报告表 3-4 ~ 3-8）
+## 7. 结果（本机实测，详见技术报告表 3-4 ~ 3-8）
 
 三种目标同时跟踪、300 帧的平均单帧耗时与精度：
 
@@ -155,7 +155,7 @@ python make_report.py
 
 ---
 
-## 八、踩坑记录
+## 8. 故障排查
 
 1. **MOSSE 在 `opencv-contrib-python==4.8.1.78` 上不可用**：`init` 返回 True，但之后每帧 `update` 都返回 False
    且框被置零 `(0,0,0,0)`。同一条序列上其它 6 种算法全部正常，干净 patch 上 MOSSE 也 39/39 成功 →

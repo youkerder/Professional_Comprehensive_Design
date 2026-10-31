@@ -12,7 +12,7 @@ datasets/cat_face/
 ├─ JPEGImages/            205 张猫咪图片（训练/验证用）
 ├─ Annotations/           LabelImg 生成的同名 .xml（PascalVOC 格式）
 ├─ ImageSets/Main/        trainval / train / val / test 索引（脚本生成）
-├─ test/                  8 张检测演示图（指导书 detect_img 的输入）
+├─ test/                  8 张检测演示图（`detect_img` 的输入）
 ├─ raw/                   下载的原始压缩包暂存
 ├─ predefined_classes.txt LabelImg 预设类别，内容为 cat
 └─ README.md
@@ -31,7 +31,7 @@ datasets/cat_face/
 
 YOLOv3 从头训练时，**没有标注的图片会被当成纯背景**。
 目前只有 1 张图有框，直接训练得不到任何可用的猫脸检测器。
-指导书的实验环境用了 **230 张全部标注**的图片。
+上游环境用了 **230 张全部标注**的图片。
 
 需要用 LabelImg 把 `JPEGImages/` 里剩余的 204 张补齐（标签统一填 `cat`）。
 
@@ -40,10 +40,10 @@ YOLOv3 从头训练时，**没有标注的图片会被当成纯背景**。
 | 位置 | 放什么 | 命名要求 |
 |---|---|---|
 | `raw/` | 网盘下载的压缩包、未整理的图片 | 随意，仅作暂存 |
-| `JPEGImages/` | 训练/验证用的图片 | **纯英文/数字**，如 `000001.jpg`。指导书明确要求「图片以及相关文件夹命名应避免使用汉字」 |
+| `JPEGImages/` | 训练/验证用的图片 | **纯英文/数字**，如 `000001.jpg`。命名规范要求「图片以及相关文件夹命名应避免使用汉字」 |
 | `Annotations/` | 与图片同名的 `.xml` 标注 | 与 `JPEGImages/` 中的文件名**一一对应**（仅扩展名不同） |
 | `ImageSets/Main/` | `trainval.txt` / `train.txt` / `val.txt` / `test.txt` | 由 `make_imagesets.py` 生成，每行一个不含扩展名的文件名 |
-| `test/` | 检测演示图，跑 `yolo_video.py --image` 的输入 | 与 `JPEGImages/` 相区分；指导书里的路径是 `VOC2007/test/*.jpg` |
+| `test/` | 检测演示图，跑 `yolo_video.py --image` 的输入 | 与 `JPEGImages/` 相区分；上游对应 `VOC2007/test/*.jpg` |
 
 ## 用 LabelImg 补标注
 
